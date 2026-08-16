@@ -1,9 +1,9 @@
 import express, { type Request, Response, NextFunction } from "express";
-import { locationPages, SITE_BASE_URL } from "@shared/location-pages";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();
+const SITE_BASE_URL = "https://portsmouthskips.co.uk";
 
 declare module 'http' {
   interface IncomingMessage {
@@ -57,23 +57,14 @@ app.use((req, res, next) => {
 
   // Serve sitemap.xml
   app.get('/sitemap.xml', (_req, res) => {
-    const urls = [
-      `  <url>
+    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
     <loc>${SITE_BASE_URL}/</loc>
     <lastmod>2026-08-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-  </url>`,
-      ...locationPages.map((page) => `  <url>
-    <loc>${SITE_BASE_URL}${page.route}</loc>
-    <lastmod>${page.lastModified}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>`),
-    ].join("\n");
-    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls}
+  </url>
 </urlset>`;
     
     res.type('application/xml');
@@ -82,10 +73,8 @@ ${urls}
 
   app.get('/robots.txt', (_req, res) => {
     res.type('text/plain');
-    const allowedRoutes = locationPages.map((page) => `Allow: ${page.route}`).join('\n');
     res.send(`User-agent: *
 Allow: /
-${allowedRoutes}
 
 Sitemap: ${SITE_BASE_URL}/sitemap.xml`);
   });

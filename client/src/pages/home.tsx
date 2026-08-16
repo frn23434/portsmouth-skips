@@ -1,16 +1,11 @@
-import { Link } from "wouter";
 import { MapPin, Truck, Shield, Clock, CheckCircle, Recycle } from "lucide-react";
 import { SiWhatsapp } from "react-icons/si";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { useMetaTags } from "@/lib/use-meta-tags";
-import { locationPages, SITE_BASE_URL } from "@shared/location-pages";
 
-interface ServiceArea {
-  name: string;
-  href?: string;
-}
+const SITE_BASE_URL = "https://portsmouthskips.co.uk";
 
 export default function Home() {
   const whatsappNumber = "447900717881";
@@ -67,17 +62,15 @@ export default function Home() {
     },
   ];
 
-  const featuredAreaLinks: ServiceArea[] = locationPages.map((page) => ({
-    name: page.areaName,
-    href: page.route,
-  }));
-
-  const serviceAreas: ServiceArea[] = [
-    ...featuredAreaLinks,
-    { name: "Portsmouth City Centre" },
-    { name: "North End" },
-    { name: "Eastney" },
-    { name: "Old Portsmouth" },
+  const serviceAreas = [
+    "Portsmouth City Centre",
+    "Southsea",
+    "Cosham",
+    "Fratton",
+    "Hilsea",
+    "North End",
+    "Eastney",
+    "Old Portsmouth",
   ];
 
   const features = [
@@ -277,32 +270,18 @@ export default function Home() {
             </p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-5xl mx-auto mb-8">
-            {serviceAreas.map((area) =>
-              area.href ? (
-                <Link
-                  key={area.name}
-                  href={area.href}
-                  className="flex items-center gap-3 p-4 bg-white dark:bg-card rounded-xl shadow-sm hover:shadow-md transition-all hover:scale-105"
-                  data-testid={`area-${area.name.toLowerCase().replace(/\s+/g, "-")}`}
-                >
-                  <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <MapPin className="h-5 w-5 text-primary" />
-                  </div>
-                  <span className="font-medium">{area.name}</span>
-                </Link>
-              ) : (
-                <div
-                  key={area.name}
-                  className="flex items-center gap-3 p-4 bg-white dark:bg-card rounded-xl shadow-sm hover:shadow-md transition-all hover:scale-105"
-                  data-testid={`area-${area.name.toLowerCase().replace(/\s+/g, "-")}`}
-                >
-                  <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <MapPin className="h-5 w-5 text-primary" />
-                  </div>
-                  <span className="font-medium">{area.name}</span>
+            {serviceAreas.map((area) => (
+              <div
+                key={area}
+                className="flex items-center gap-3 p-4 bg-white dark:bg-card rounded-xl shadow-sm hover:shadow-md transition-all hover:scale-105"
+                data-testid={`area-${area.toLowerCase().replace(/\s+/g, "-")}`}
+              >
+                <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                  <MapPin className="h-5 w-5 text-primary" />
                 </div>
-              ),
-            )}
+                <span className="font-medium">{area}</span>
+              </div>
+            ))}
           </div>
           <div className="text-center">
             <p className="text-muted-foreground text-lg mb-6">And nearby areas across South East Hampshire</p>

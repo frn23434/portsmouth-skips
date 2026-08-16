@@ -1,29 +1,11 @@
-import { ChevronDown, MapPin, Truck } from "lucide-react";
+import { Truck } from "lucide-react";
 import { SiWhatsapp } from "react-icons/si";
 import { Link } from "wouter";
-import { Button } from "@/components/ui/button";
-import { locationPages } from "@shared/location-pages";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 export default function Header() {
   const whatsappNumber = "447900717881";
   const whatsappMessage = encodeURIComponent("Hi, I'd like to enquire about skip hire in Portsmouth.");
   const whatsappLink = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
-  const navigationLocations = [
-    { href: "/", label: "Skip Hire in Portsmouth", testId: "portsmouth" },
-    ...locationPages.map((page) => ({
-      href: page.route,
-      label: `Skip Hire in ${page.areaName}`,
-      testId: page.areaName.toLowerCase(),
-    })),
-  ];
 
   return (
     <header className="bg-card border-b border-border sticky top-0 z-50 shadow-sm">
@@ -38,56 +20,6 @@ export default function Header() {
           </Link>
 
           <div className="flex items-center gap-2">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="hidden sm:inline-flex items-center gap-2"
-                  data-testid="button-header-locations"
-                >
-                  <MapPin className="h-4 w-4" />
-                  Locations
-                  <ChevronDown className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56" data-testid="menu-header-locations">
-                <DropdownMenuLabel>Browse Locations</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                {navigationLocations.map((location) => (
-                  <DropdownMenuItem asChild key={location.href}>
-                    <Link href={location.href} data-testid={`link-menu-location-${location.testId}`}>
-                      {location.label}
-                    </Link>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="sm:hidden"
-                  data-testid="button-header-locations-mobile"
-                  aria-label="Open locations menu"
-                >
-                  <MapPin className="h-5 w-5" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56" data-testid="menu-header-locations-mobile">
-                <DropdownMenuLabel>Browse Locations</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                {navigationLocations.map((location) => (
-                  <DropdownMenuItem asChild key={location.href}>
-                    <Link href={location.href} data-testid={`link-menu-mobile-location-${location.testId}`}>
-                      {location.label}
-                    </Link>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-
             <a 
               href={whatsappLink}
               target="_blank"

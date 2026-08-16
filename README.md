@@ -1,6 +1,6 @@
 # Portsmouth Skips
 
-Portsmouth Skips is a full-stack TypeScript website for a local skip hire business. It uses Vite and React for the frontend and Express for the backend, with SEO-focused location pages for Portsmouth and nearby service areas.
+Portsmouth Skips is a full-stack TypeScript website for a local skip hire business. It uses Vite and React for the frontend and Express for the backend, with a single SEO-focused homepage for Portsmouth skip hire.
 
 ## Live domain
 
@@ -8,13 +8,9 @@ Portsmouth Skips is a full-stack TypeScript website for a local skip hire busine
 - Sitemap: `https://portsmouthskips.co.uk/sitemap.xml`
 - Robots: `https://portsmouthskips.co.uk/robots.txt`
 
-## Current location pages
+## Current pages
 
 - `/`
-- `/skip-hire-in-southsea`
-- `/skip-hire-in-cosham`
-- `/skip-hire-in-fratton`
-- `/skip-hire-in-hilsea`
 
 ## Tech stack
 
@@ -57,19 +53,18 @@ npm run start
 
 - [client/](C:/Users/farha/Downloads/portsmouth-skips/client) - Vite/React frontend
 - [server/](C:/Users/farha/Downloads/portsmouth-skips/server) - Express server and runtime sitemap/robots endpoints
-- [shared/](C:/Users/farha/Downloads/portsmouth-skips/shared) - shared route/location data and schema
+- [shared/](C:/Users/farha/Downloads/portsmouth-skips/shared) - shared schema
 
 ## SEO notes
 
 - Canonical URLs and Open Graph URLs are set through [use-meta-tags.ts](C:/Users/farha/Downloads/portsmouth-skips/client/src/lib/use-meta-tags.ts)
-- Location page configuration is centralized in [location-pages.ts](C:/Users/farha/Downloads/portsmouth-skips/shared/location-pages.ts)
 - Static sitemap is stored in [sitemap.xml](C:/Users/farha/Downloads/portsmouth-skips/client/public/sitemap.xml)
 - Runtime sitemap and robots responses are served from [index.ts](C:/Users/farha/Downloads/portsmouth-skips/server/index.ts)
 
 ## Deployment notes
 
-- Update sitemap dates when adding or changing location pages
-- Keep the domain in [index.html](C:/Users/farha/Downloads/portsmouth-skips/client/index.html), [location-pages.ts](C:/Users/farha/Downloads/portsmouth-skips/shared/location-pages.ts), and [sitemap.xml](C:/Users/farha/Downloads/portsmouth-skips/client/public/sitemap.xml) aligned with the live site
+- Update sitemap dates when the homepage changes significantly
+- Keep the domain in [index.html](C:/Users/farha/Downloads/portsmouth-skips/client/index.html), [home.tsx](C:/Users/farha/Downloads/portsmouth-skips/client/src/pages/home.tsx), and [sitemap.xml](C:/Users/farha/Downloads/portsmouth-skips/client/public/sitemap.xml) aligned with the live site
 - After deployment, submit the sitemap to Google Search Console
 
 ## CI
