@@ -1,0 +1,112 @@
+import express, { type Request, Response, NextFunction } from "express";
+import { locationPages, SITE_BASE_URL } from "@shared/location-pages";
+import { registerRoutes } from "./routes";
+import { setupVite, serveStatic, log } from "./vite";
+
+const app = express();
+
+declare module 'http' {
+  interface IncomingMessage {
+    rawBody: unknown
+  }
+}
+app.use(express.json({
+  verify: (req, _res, buf) => {
+    req.rawBody = buf;
+  }
+}));
+app.use(express.urlencoded({ extended: false }));
+
+app.use((req, res, next) => {
+  const start = Date.now();
+  const path = req.path;
+  let capturedJsonResponse: Record<string, any> | undefined = undefined;
+
+  const originalResJson = res.json;
+  res.json = function (bodyJson, ...args) {
+    capturedJsonResponse = bodyJson;
+    return originalResJson.apply(res, [bodyJson, ...args]);
+  };
+
+  res.on("finish", () => {
+    const duration = Date.now() - start;
+    if (path.startsWith("/api")) {
+      let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
+      if (capturedJsonResponse) {
+        logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
+      }
+
+      if (logLine.length > 80) {
+        logLine = logLine.slice(0, 79) + "…";
+      }
+
+      log(logLine);
+    }
+  });
+
+  next();
+});
+
+(async () => {
+  // Health check endpoint for deployment verification
+  app.get('/health', (_req, res) => {
+    res.status(200).json({ status: 'ok' });
+  });
+
+  const server = await registerRoutes(app);
+
+  // Serve sitemap.xml
+  app.get('/sitemap.xml', (_req, res) => {
+    const urls = [
+      `  <url>
+    <loc>${SITE_BASE_URL}/</loc>
+    <lastmod>2026-08-16</lastmod>
+  </url>`,
+      ...locationPages.map((page) => `  <url>
+    <loc>${SITE_BASE_URL}${page.route}</loc>
+    <lastmod>${page.lastModified}</lastmod>
+  </url>`),
+    ].join("\n");
+    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls}
+</urlset>`;
+    
+    res.type('application/xml');
+    res.send(sitemap);
+  });
+
+  app.get('/robots.txt', (_req, res) => {
+    res.type('text/plain');
+    const allowedRoutes = locationPages.map((page) => `Allow: ${page.route}`).join('\n');
+    res.send(`User-agent: *
+Allow: /
+${allowedRoutes}
+
+Sitemap: ${SITE_BASE_URL}/sitemap.xml`);
+  });
+
+  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+    const status = err.status || err.statusCode || 500;
+    const message = err.message || "Internal Server Error";
+
+    res.status(status).json({ message });
+    throw err;
+  });
+
+  // importantly only setup vite in development and after
+  // setting up all the other routes so the catch-all route
+  // doesn't interfere with the other routes
+  if (app.get("env") === "development") {
+    await setupVite(app, server);
+  } else {
+    serveStatic(app);
+  }
+
+  // Serve on the port from env, defaulting to 5000.
+  // This serves both the API and the client.
+  const port = parseInt(process.env.PORT || '5000', 10);
+  server.listen(port, "127.0.0.1", () => {
+    log(`serving on http://127.0.0.1:${port}`);
+  });
+})();

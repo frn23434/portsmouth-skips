@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Allow: /skip-hire-in-southsea
+Allow: /skip-hire-in-cosham
+Allow: /skip-hire-in-fratton
+Allow: /skip-hire-in-hilsea
+
+Sitemap: https://portsmouthskips.co.uk/sitemap.xml
