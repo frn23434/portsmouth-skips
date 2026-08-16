@@ -61,10 +61,14 @@ app.use((req, res, next) => {
       `  <url>
     <loc>${SITE_BASE_URL}/</loc>
     <lastmod>2026-08-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
   </url>`,
       ...locationPages.map((page) => `  <url>
     <loc>${SITE_BASE_URL}${page.route}</loc>
     <lastmod>${page.lastModified}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>`),
     ].join("\n");
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
