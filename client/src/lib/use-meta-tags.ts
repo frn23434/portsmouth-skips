@@ -10,6 +10,9 @@ interface MetaTags {
   twitterTitle?: string;
   twitterDescription?: string;
   canonicalUrl?: string;
+  ogType?: string;
+  publishedTime?: string;
+  modifiedTime?: string;
 }
 
 export function useMetaTags(tags: MetaTags) {
@@ -59,6 +62,16 @@ export function useMetaTags(tags: MetaTags) {
 
     updateMetaByProperty('twitter:title', tags.twitterTitle || tags.title);
     updateMetaByProperty('twitter:description', tags.twitterDescription || tags.description);
+    updateMetaByProperty('og:type', tags.ogType || 'website');
+    updateMetaByProperty('og:site_name', 'Portsmouth Skips');
+    updateMetaByProperty('og:locale', 'en_GB');
+    updateMetaByProperty('twitter:card', 'summary_large_image');
+    if (tags.publishedTime) {
+      updateMetaByProperty('article:published_time', tags.publishedTime);
+    }
+    if (tags.modifiedTime) {
+      updateMetaByProperty('article:modified_time', tags.modifiedTime);
+    }
     if (tags.canonicalUrl) {
       updateCanonical(tags.canonicalUrl);
     }

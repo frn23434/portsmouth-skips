@@ -4,6 +4,8 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { useMetaTags } from "@/lib/use-meta-tags";
+import { Link } from "wouter";
+import { blogPosts } from "@/lib/blog-posts";
 
 const SITE_BASE_URL = "https://portsmouthskips.co.uk";
 
@@ -319,3 +321,4 @@ export default function Home() {
     </div>
   );
 }
+

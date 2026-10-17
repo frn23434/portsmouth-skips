@@ -19,6 +19,11 @@ export default function Header() {
             </div>
           </Link>
 
+          <nav className="flex items-center gap-4 ml-auto mr-4" aria-label="Main">
+            <Link href="/" className="text-sm font-medium hover:text-primary" data-testid="link-nav-home">Home</Link>
+            <Link href="/blog" className="text-sm font-medium hover:text-primary" data-testid="link-nav-blog">Blog</Link>
+          </nav>
+
           <div className="flex items-center gap-2">
             <a 
               href={whatsappLink}
@@ -46,3 +51,4 @@ export default function Header() {
     </header>
   );
 }
+

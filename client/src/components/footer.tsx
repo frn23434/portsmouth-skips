@@ -1,5 +1,7 @@
 import { Truck, Facebook, Instagram, MapPin, Clock } from "lucide-react";
 import { SiWhatsapp } from "react-icons/si";
+import { Link } from "wouter";
+import { blogPosts } from "@/lib/blog-posts";
 
 export default function Footer() {
   const whatsappNumber = "447900717881";
@@ -99,6 +101,19 @@ export default function Footer() {
           </div>
         </div>
 
+        <div className="mt-8 pt-8 border-t border-border">
+          <h4 className="text-sm font-semibold text-foreground mb-4">
+            <Link href="/blog" className="hover:text-primary">Skip Hire Guides</Link>
+          </h4>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+            {blogPosts.map((p) => (
+              <li key={p.slug}>
+                <Link href={`/blog/${p.slug}`} className="text-sm text-muted-foreground hover:text-primary transition-colors">{p.title}</Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
         <div className="mt-8 pt-8 border-t border-border text-center">
           <p className="text-sm text-muted-foreground">
             © 2025 Portsmouth Skips. All rights reserved. |{" "}
@@ -115,3 +130,4 @@ export default function Footer() {
     </footer>
   );
 }
+
